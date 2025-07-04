@@ -1,0 +1,157 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id                Int        @id @default(autoincrement())
+  name              String
+  email             String     @unique
+  password          String 
+  token             String?
+
+  userRoles     UserRole[]
+  booksAuthored Book[]         @relation("AuthorBooks")
+  bookBorrowers BookBorrower[]
+
+  librariesManaged Library[] @relation("LibraryAdmin")
+
+  @@map("users")
+}
+
+model Role {
+  id          Int          @id @default(autoincrement())
+  name        RoleName     @unique
+  userRoles   UserRole[]
+  roleActions RoleAction[]
+
+  @@map("roles")
+}
+
+model Action {
+  id       Int        @id @default(autoincrement())
+  resource String
+  action   ActionType
+
+  roleActions RoleAction[]
+
+  @@unique([resource, action])
+
+  @@map("actions")
+}
+
+model RoleAction {
+  id       Int @id @default(autoincrement())
+  roleId   Int
+  actionId Int
+
+  role   Role   @relation(fields: [roleId], references: [id])
+  action Action @relation(fields: [actionId], references: [id])
+
+  @@map("role_actions")
+  @@unique([roleId, actionId])
+}
+
+model UserRole {
+  id        Int  @id @default(autoincrement())
+  userId    Int
+  roleId    Int
+  libraryId Int?
+   status            UserStatus @default(PENDING)
+
+  user    User     @relation(fields: [userId], references: [id])
+  role    Role     @relation(fields: [roleId], references: [id])
+  library Library? @relation(fields: [libraryId], references: [id])
+
+  @@map("user_roles")
+}
+
+model Book {
+  id       Int    @id @default(autoincrement())
+  title    String
+  coverUrl String
+  authorId Int
+
+  author           User               @relation("AuthorBooks", fields: [authorId], references: [id])
+  bookBorrowers    BookBorrower[]
+  libraryInventory LibraryInventory[]
+
+  price Float
+
+  @@map("books")
+}
+
+model BookBorrower {
+  id         Int          @id @default(autoincrement())
+  userId     Int
+  bookId     Int
+  borrowDate DateTime
+  returnDate DateTime?
+  status     BorrowStatus
+  charge     Float
+
+  user User @relation(fields: [userId], references: [id])
+  book Book @relation(fields: [bookId], references: [id])
+
+  @@map("book_borrowers")
+}
+
+model Library {
+  id      Int    @id @default(autoincrement())
+  name    String
+  adminId Int?    @unique
+
+  admin     User?              @relation("LibraryAdmin", fields: [adminId], references: [id])
+  userRoles UserRole[]
+  inventory LibraryInventory[]
+
+  @@map("libraries")
+}
+
+model LibraryInventory {
+  id        Int      @id @default(autoincrement())
+  bookId    Int
+  libraryId Int
+  addedDate DateTime
+
+  book    Book    @relation(fields: [bookId], references: [id])
+  library Library @relation(fields: [libraryId], references: [id])
+
+  @@map("library_inventory")
+}
+
+enum UserStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
+enum RoleName {
+  SUPER_ADMIN
+  LIBRARY_ADMIN
+  AUTHOR
+  BORROWER
+}
+
+enum ActionType {
+  CREATE
+  READ
+  UPDATE
+  DELETE
+}
+
+enum BorrowStatus {
+  BORROWED
+  RETURNED
+}
+
