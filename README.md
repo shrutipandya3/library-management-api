@@ -30,32 +30,32 @@ A Node.js REST API built with TypeScript, Prisma, and PostgreSQL to manage users
 
 ### 1. Clone the Repository
 
-```bash
-git clone your-repository-url.git
-cd your-project-directory
+  ```bash
+  git clone your-repository-url.git
+  cd your-project-directory
 
 ### 2. Install dependencies
 
-```bash
-npm install
+  ```bash
+  npm install
 
 ### 3. Generate Prisma Client
 
-```bash
-npx prisma generate
+  ```bash
+  npx prisma generate
 
 ### 4. Set up environment variables
-- Create a .env file in the root directory and add the following:
+  - Create a .env file in the root directory and add the following:
 
-```bash
-DATABASE_URL=your_neon_database_url_here
-PORT=3000
-JWT_SECRET=your_jwt_secret_here
-SUPABASE_URL=your_supabase_project_url_here
-SUPABASE_SERVICE_ROLE_KEY=your_supabase_service_role_key_here
-SUPABASE_BUCKET_NAME=your_supabase_bucket_name_here
+  ```bash
+  DATABASE_URL=your_neon_database_url_here
+  PORT=3000
+  JWT_SECRET=your_jwt_secret_here
+  SUPABASE_URL=your_supabase_project_url_here
+  SUPABASE_SERVICE_ROLE_KEY=your_supabase_service_role_key_here
+  SUPABASE_BUCKET_NAME=your_supabase_bucket_name_here
 
 ### 5. Start the development server
 
-```bash
-npm run dev
+  ```bash
+  npm run dev
