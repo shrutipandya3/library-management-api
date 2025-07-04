@@ -33,16 +33,19 @@ A Node.js REST API built with TypeScript, Prisma, and PostgreSQL to manage users
   ```bash
   git clone your-repository-url.git
   cd your-project-directory
+  ```
 
 ### 2. Install dependencies
 
   ```bash
   npm install
+  ```
 
 ### 3. Generate Prisma Client
 
   ```bash
   npx prisma generate
+  ```
 
 ### 4. Set up environment variables
   - Create a .env file in the root directory and add the following:
@@ -54,8 +57,10 @@ A Node.js REST API built with TypeScript, Prisma, and PostgreSQL to manage users
   SUPABASE_URL=your_supabase_project_url_here
   SUPABASE_SERVICE_ROLE_KEY=your_supabase_service_role_key_here
   SUPABASE_BUCKET_NAME=your_supabase_bucket_name_here
+  ```
 
 ### 5. Start the development server
 
   ```bash
   npm run dev
+  ```
