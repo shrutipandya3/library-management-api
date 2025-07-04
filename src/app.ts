@@ -11,6 +11,10 @@ app.use(express.json());
 app.use(i18n.init);
 app.use(languageMiddleware);
 
+app.get("/ping", (req, res) => {
+  res.json({ message: "pong" });
+});
+
 app.use("/api", routes);
 
 app.use(errorHandler);
